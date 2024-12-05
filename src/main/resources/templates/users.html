@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" type="image/svg+xml">
+    <title>React App</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2D3250;
+            --secondary-color: #424769;
+            --accent-color: #7077A1;
+            --background-color: #F6F6F6;
+            --card-background: #ffffff;
+            --text-primary: #2D3250;
+            --text-secondary: #676F9D;
+            --success-color: #4CAF50;
+            --danger-color: #FF6B6B;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: var(--primary-color);
+            padding: 2rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .navbar-brand {
+            color: white !important;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: block;
+            text-align: center;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background-color: var(--accent-color);
+            color: white !important;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2.25rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 60px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .table-container {
+            background-color: var(--card-background);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-control {
+            border: 2px solid #eee;
+            padding: 0.75rem 1.5rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(112, 119, 161, 0.1);
+        }
+
+        .btn-search {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table thead th {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 1.25rem 1rem;
+            border: none;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(112, 119, 161, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .table td {
+            padding: 1.25rem 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .pagination {
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+
+        .page-link {
+            color: var(--primary-color);
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .alert {
+            border-radius: 1rem;
+            border: none;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+        }
+
+        .alert-danger {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: var(--danger-color);
+        }
+
+        .language-dropdown .dropdown-toggle {
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-top: auto;
+        }
+
+        .language-dropdown .dropdown-menu {
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .language-dropdown .dropdown-item {
+            color: white;
+            padding: 0.75rem 1rem;
+        }
+
+        .language-dropdown .dropdown-item:hover {
+            background-color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                padding: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .table-container {
+                padding: 1rem;
+            }
+
+            .table thead {
+                display: none;
+            }
+
+            .table tbody tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid #eee;
+                border-radius: 1rem;
+            }
+
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+            }
+
+            .table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                margin-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <a class="navbar-brand" th:href="@{/}">Gestion des Courtiers</a>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/dashboard}">Tableau de Bord</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}">Déconnexion</a>
+        </li>
+    </ul>
+    <div class="language-dropdown mt-auto">
+        <div class="dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+                <span th:text="${#locale.language == 'en' ? 'English' : #locale.language == 'kr' ? 'Kirundi' : 'Français'}"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" th:href="@{''(lang=en)}">English</a></li>
+                <li><a class="dropdown-item" th:href="@{''(lang=kr)}">Kirundi</a></li>
+                <li><a class="dropdown-item" th:href="@{''(lang=fr)}">Français</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <h1>Clients Enregistrés</h1>
+
+    <div th:if="${messageError}" class="alert alert-danger" th:text="${messageError}"></div>
+    <div th:if="${messageSuccess}" class="alert alert-success" th:text="${messageSuccess}"></div>
+
+    <div class="table-container">
+        <form th:action="@{/users}" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Rechercher des clients..." name="search" th:value="${search}">
+                <button class="btn btn-search" type="submit">Rechercher</button>
+            </div>
+        </form>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th><a th:href="@{/users(sort='firstName', dir=${sortField == 'firstName' ? reverseSortDir : 'asc'})}">Prénom</a></th>
+                <th><a th:href="@{/users(sort='lastName', dir=${sortField == 'lastName' ? reverseSortDir : 'asc'})}">Nom</a></th>
+                <th><a th:href="@{/users(sort='email', dir=${sortField == 'email' ? reverseSortDir : 'asc'})}">Email</a></th>
+                <th><a th:href="@{/users(sort='roles[0].name', dir=${sortField == 'roles[0].name' ? reverseSortDir : 'asc'})}">Rôle</a></th>
+                <th><a th:href="@{/users(sort='phoneNumber', dir=${sortField == 'phoneNumber' ? reverseSortDir : 'asc'})}">Téléphone</a></th>
+                <th><a th:href="@{/users(sort='dateOfBirth', dir=${sortField == 'dateOfBirth' ? reverseSortDir : 'asc'})}">Date de Naissance</a></th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user: ${users}">
+                <td data-label="Prénom" th:text="${user.firstName}"></td>
+                <td data-label="Nom" th:text="${user.lastName}"></td>
+                <td data-label="Email" th:text="${user.email}"></td>
+                <td data-label="Rôle" th:text="${user.roles[0].name}"></td>
+                <td data-label="Téléphone" th:text="${user.phoneNumber}"></td>
+                <td data-label="Date de Naissance" th:text="${#temporals.format(user.dateOfBirth, 'dd-MM-yyyy')}"></td>
+                <td data-label="Actions">
+                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Modifier</a>
+                    <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?')">Supprimer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav aria-label="Navigation des pages">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/users(page=${currentPage - 1}, size=${size}, sort=${sortField}, dir=${sortDir}, search=${search})}">Précédent</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/users(page=${i}, size=${size}, sort=${sortField}, dir=${sortDir}, search=${search})}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/users(page=${currentPage + 1}, size=${size}, sort=${sortField}, dir=${sortDir}, search=${search})}">Suivant</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

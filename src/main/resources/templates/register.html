@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" type="image/svg+xml">
+    <title>React App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: #2d3748 !important;
+        }
+
+        .nav-link {
+            color: #4a5568 !important;
+            font-weight: 500;
+        }
+
+        .main-container {
+            padding: 3rem 0;
+        }
+
+        .registration-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+            align-items: center;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            background: #ffffff;
+        }
+
+        .card-header {
+            background: transparent;
+            border-bottom: none;
+            padding: 2rem 2rem 0;
+        }
+
+        .card-header h2 {
+            color: #1a202c;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            color: #718096;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-label {
+            color: #4a5568;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            background-color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-primary {
+            background-color: #4f46e5;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 500;
+            border-radius: 12px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+        }
+
+        .alert-info {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            color: #0369a1;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-link {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .login-link:hover {
+            color: #4338ca;
+            text-decoration: underline;
+        }
+
+        .text-danger {
+            color: #dc2626;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1.5rem;
+            }
+
+            .card-header {
+                padding: 1.5rem 1.5rem 0;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">BMS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container registration-container">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>Create Account</h2>
+                    <p class="card-subtitle">Join our broker management platform</p>
+                </div>
+                <div class="card-body">
+                    <div th:if="${param.success}" class="alert alert-info">
+                        Registration successful! You can now login to your account.
+                    </div>
+
+                    <form method="post" role="form" th:action="@{/register/save}" th:object="${user}">
+                        <div class="input-group">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input class="form-control" id="firstName" name="firstName" placeholder="John" th:field="*{firstName}" type="text" />
+                                <p th:errors="*{firstName}" class="text-danger" th:if="${#fields.hasErrors('firstName')}"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input class="form-control" id="lastName" name="lastName" placeholder="Doe" th:field="*{lastName}" type="text" />
+                                <p th:errors="*{lastName}" class="text-danger" th:if="${#fields.hasErrors('lastName')}"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input class="form-control" id="email" name="email" placeholder="john@example.com" th:field="*{email}" type="email" />
+                            <p th:errors="*{email}" class="text-danger" th:if="${#fields.hasErrors('email')}"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <input class="form-control" id="password" name="password" placeholder="••••••••" th:field="*{password}" type="password" />
+                            <p th:errors="*{password}" class="text-danger" th:if="${#fields.hasErrors('password')}"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input class="form-control" id="phoneNumber" name="phoneNumber" placeholder="+1 (555) 000-0000" th:field="*{phoneNumber}" type="text" />
+                            <p th:errors="*{phoneNumber}" class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth</label>
+                            <input class="form-control" id="dateOfBirth" name="dateOfBirth" th:field="*{dateOfBirth}" type="date" />
+                            <p th:errors="*{dateOfBirth}" class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}"></p>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <button class="btn btn-primary" type="submit">Create Account</button>
+                        </div>
+
+                        <div class="text-center">
+                            Already have an account? <a class="login-link" th:href="@{/login}">Login here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
